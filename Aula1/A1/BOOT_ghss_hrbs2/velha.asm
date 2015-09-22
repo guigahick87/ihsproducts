@@ -79,6 +79,12 @@ jmp code
 
 	;;user data section
 	table  times 10 db 0
+	nome: db 21
+	group: db 20
+	fone: db 12
+	email: db 15
+	string_aux:db 21
+
 	
 code:
 
@@ -114,6 +120,44 @@ print_function:
 		pop bp
 ret 2
 
+
+read_function:
+		
+read:	
+		mov ah,0	;recebe o caracter e armazena em al
+		int 16h
+
+		cmp al,13	;;check if the "enter" was pressed
+		je exitRead
+
+		;;cmp al, 8	; check if the BACKSPACE was pressed
+		;;je DeleteCaracter
+
+		;;mov [string_aux + di], al
+		mov byte[si],al
+		inc si
+
+		mov ah,0xe
+		mov bh,0
+		int 0x10	;;call the video system to show the last character
+							
+		jmp read	;; if not,then get the next character
+
+exitRead:		
+		xor ax, ax		; atribuindo zero no final da string
+		;mov [string_aux + di], al 
+		mov byte[si],al
+		;mov [count2], di
+
+		;xor ax, ax
+		;mov ax, [count1]
+		;inc ax
+		;mov [count1], ax
+		;changeCursor [count1]
+ret 
+
+;;;user funtions
+
 add_contact:
 cc 2,30
 mov si,add_contact_info_message
@@ -125,8 +169,27 @@ mov si,enter_contact_name
 push si
 call print_function
 
+xor di, di 
+cc 5,5
+lea si,[nome]
+call read_function	; recebe a string do nome do usuario
+
+cc 5,30
+mov si,nome
+push si
+call print_function
+
 cc 6,5
 mov si,enter_contact_group
+push si
+call print_function
+
+cc 7,5
+lea si,[group]
+call read_function	; recebe a string do nome do usuario
+
+cc 7,30
+mov si,group
 push si
 call print_function
 
@@ -135,8 +198,26 @@ mov si,enter_contact_telefone
 push si
 call print_function
 
+cc 9,5
+lea si,[fone]
+call read_function	; recebe a string do nome do usuario
+
+cc 9,30
+mov si,fone
+push si
+call print_function
+
 cc 10,5
 mov si,enter_contact_email
+push si
+call print_function
+
+cc 11,5
+lea si,[email]
+call read_function	; recebe a string do nome do usuario
+
+cc 11,30
+mov si,email
 push si
 call print_function
 
