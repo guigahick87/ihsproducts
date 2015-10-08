@@ -25,8 +25,8 @@ PrintNwL:
     int 0x10
 	ret
 
-;Reboot the Machine 
-Reboot: 
+;Enter pmode 
+pmodeRequest: 
     mov si, AnyKey
     call Println
     call GetPressedKey 
@@ -62,7 +62,7 @@ call clear
 mov si, msg
 call Println
 
-call Reboot
+call pmodeRequest
 
 continue:
 cli
