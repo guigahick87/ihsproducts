@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1447894777 source:/home/hugo/Documentos/Projeto_IHS/projetoIHS/main.c
+	<allegro5/allegro5.h>
+	<stdio.h>
+	<stdlib.h>
+
