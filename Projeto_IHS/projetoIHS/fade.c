@@ -6,13 +6,13 @@
 
 #include "constants.h"
 
-int executeFade(ALLEGRO_DISPLAY *display)
+int executeFade(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *bitmap)
 {
     ALLEGRO_BITMAP *buffer = NULL;
     buffer = al_create_bitmap(SCREEN_WIDHT, SCREEN_HEIGHT);
 
     fadeout(display, buffer, 3);
-    fadein(buffer, 3);
+    fadein(bitmap, 3);
 
     al_destroy_bitmap(buffer);
     return 0;

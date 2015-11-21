@@ -3,7 +3,7 @@
 
 void initMenu(void);
 void shutdownMenu(void);
-void menuLoop(ALLEGRO_DISPLAY* display);
+void menuLoop();
 void executeMenu(ALLEGRO_DISPLAY* display);
 
 #endif // MENU_H_INCLUDED

@@ -4,7 +4,8 @@
 enum gameStates{
     Menu = 1,
     Game
-}gameStates;
+};
+typedef enum gameStates GameState;
 
 void abort_game(const char* message);
 

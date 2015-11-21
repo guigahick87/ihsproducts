@@ -10,10 +10,14 @@
 #include "fade.h"
 #include "util.h"
 
+const char MENU_BACKGROUND_PATH[] = "background.jpg";
+const char GAME_BACKGROUND_PATH[] = "background2.jpg";
+GameState gState;
+
 bool menuDone;
 ALLEGRO_EVENT_QUEUE* eventMenuQueue;
 ALLEGRO_TIMER* timer;
-
+ALLEGRO_DISPLAY* display;
 ALLEGRO_BITMAP *background = NULL;
 ALLEGRO_FONT *font = NULL;
 ALLEGRO_AUDIO_STREAM *music = NULL;
@@ -24,11 +28,9 @@ void initMenu(void)
     if (!timer)
         abort_game("Failed to create timer");
 
-    background = al_load_bitmap("background.jpg");
+    background = al_load_bitmap(MENU_BACKGROUND_PATH);
     if (!background)
-    {
         abort_game("Failed to load background");
-    }
 
     eventMenuQueue = al_create_event_queue();
     if (!eventMenuQueue)
@@ -46,6 +48,7 @@ void initMenu(void)
     al_register_event_source(eventMenuQueue, al_get_timer_event_source(timer));
 
     menuDone = false;
+    gState = Menu;
 }
 
 void shutdownMenu(void)
@@ -62,11 +65,11 @@ void shutdownMenu(void)
     if (font)
         al_destroy_font(font);
 
-    if(music)
+    if (music)
         al_destroy_audio_stream(music);
 }
 
-void menuLoop(ALLEGRO_DISPLAY* display)
+void menuLoop()
 {
     bool redraw = true;
     al_start_timer(timer);
@@ -87,9 +90,11 @@ void menuLoop(ALLEGRO_DISPLAY* display)
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 menuDone = true;
             }
-            if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
-                executeFade(display);
-                al_flush_event_queue(eventMenuQueue);
+            if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+                changeGameState(Game);
+            }
+            if (event.keyboard.keycode == ALLEGRO_KEY_UP){
+                changeGameState(Menu);
             }
             //get_user_input();
         }
@@ -105,9 +110,27 @@ void menuLoop(ALLEGRO_DISPLAY* display)
     }
 }
 
-void executeMenu(ALLEGRO_DISPLAY* display)
+void executeMenu(ALLEGRO_DISPLAY* _display)
 {
+    display = _display;
     initMenu();
     menuLoop(display);
     shutdownMenu();
+}
+
+void changeGameState(GameState state)
+{
+    gState = state;
+    al_destroy_bitmap(background);
+    switch(gState)
+    {
+        case Game:
+                background = al_load_bitmap(GAME_BACKGROUND_PATH);
+            break;
+        case Menu:
+                background = al_load_bitmap(MENU_BACKGROUND_PATH);
+            break;
+    }
+    executeFade(display, background);
+    al_flush_event_queue(eventMenuQueue);
 }
