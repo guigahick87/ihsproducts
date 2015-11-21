@@ -4,13 +4,15 @@
 	<stdio.h>
 	<stdlib.h>
 
-1448065110 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/main.c
+1448070349 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/main.c
 	<allegro5/allegro5.h>
 	<stdio.h>
 	<stdlib.h>
 	"fade.h"
+	"util.h"
+	"menu.h"
 
-1448065199 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.c
+1448066702 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	<stdio.h>
@@ -19,5 +21,21 @@
 
 1447937411 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/constants.h
 
-1448065022 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.h
+1448066702 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.h
+
+1448066391 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/util.h
+
+1448067750 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.h
+
+1448066391 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/util.c
+	<allegro5/allegro5.h>
+	<stdio.h>
+	<stdlib.h>
+
+1448070211 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.c
+	<allegro5/allegro5.h>
+	<stdio.h>
+	<stdlib.h>
+	"fade.h"
+	"util.h"
 

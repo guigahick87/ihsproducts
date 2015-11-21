@@ -6,7 +6,7 @@
 
 #include "constants.h"
 
-int execute(ALLEGRO_DISPLAY *display)
+int executeFade(ALLEGRO_DISPLAY *display)
 {
     ALLEGRO_BITMAP *buffer = NULL;
     buffer = al_create_bitmap(SCREEN_WIDHT, SCREEN_HEIGHT);
