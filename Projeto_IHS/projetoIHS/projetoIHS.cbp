@@ -31,6 +31,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="constants.h" />
+		<Unit filename="fade.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fade.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

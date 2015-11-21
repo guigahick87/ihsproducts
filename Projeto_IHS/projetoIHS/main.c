@@ -2,10 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "fade.h"
+
 bool done;
 ALLEGRO_EVENT_QUEUE* event_queue;
 ALLEGRO_TIMER* timer;
 ALLEGRO_DISPLAY* display;
+ALLEGRO_BITMAP *background = NULL;
 
 void abort_game(const char* message)
 {
@@ -18,6 +21,9 @@ void init(void)
     if (!al_init())
         abort_game("Failed to initialize allegro");
 
+    if (!al_init_image_addon())
+        abort_game("Failed to initialize allegro_image");
+
     if (!al_install_keyboard())
         abort_game("Failed to install keyboard");
 
@@ -29,6 +35,12 @@ void init(void)
     display = al_create_display(640, 480);
     if (!display)
         abort_game("Failed to create display");
+
+    background = al_load_bitmap("background.jpg");
+    if (!background)
+    {
+        abort_game("Failed to load background");
+    }
 
     event_queue = al_create_event_queue();
     if (!event_queue)
@@ -48,6 +60,9 @@ void shutdown(void)
 
     if (display)
         al_destroy_display(display);
+
+    if (background)
+        al_destroy_bitmap(background);
 
     if (event_queue)
         al_destroy_event_queue(event_queue);
@@ -70,12 +85,16 @@ void game_loop(void)
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 done = true;
             }
+            if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+                execute(display);
+            }
             //get_user_input();
         }
 
         if (redraw && al_is_event_queue_empty(event_queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_tinted_bitmap(background, al_map_rgba(255, 255, 255, 255), 0, 0, 0);
             //update_graphics();
             al_flip_display();
         }

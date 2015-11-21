@@ -4,3 +4,20 @@
 	<stdio.h>
 	<stdlib.h>
 
+1448065110 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/main.c
+	<allegro5/allegro5.h>
+	<stdio.h>
+	<stdlib.h>
+	"fade.h"
+
+1448065199 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<stdio.h>
+	<stdbool.h>
+	"constants.h"
+
+1447937411 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/constants.h
+
+1448065022 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.h
+
