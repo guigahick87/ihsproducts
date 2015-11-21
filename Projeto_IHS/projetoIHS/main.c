@@ -15,6 +15,15 @@ void init(void)
     if (!al_init_image_addon())
         abort_game("Failed to initialize allegro_image");
 
+    if (!al_install_audio())
+        abort_game("Failed to install audio");
+
+    if (!al_init_acodec_addon())
+        abort_game("Failed to initialize audio codecs");
+
+    if (!al_reserve_samples(1))
+        abort_game("Failed to allocate audio channels");
+
      if (!al_init_ttf_addon())
         abort_game("Failed to initialize allegro_ttf");
 
@@ -26,6 +35,7 @@ void init(void)
     if (!display)
         abort_game("Failed to create display");
 
+    al_set_window_title(display, "Brega Hero");
 }
 
 void game_loop(void)

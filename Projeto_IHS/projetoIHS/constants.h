@@ -4,4 +4,6 @@
 const int SCREEN_WIDHT = 640;
 const int SCREEN_HEIGHT = 480;
 
+const int FRAMES_POR_SEGUNDO = 60;
+
 #endif // CONSTANTS_H_INCLUDED

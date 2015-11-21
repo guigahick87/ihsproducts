@@ -1,6 +1,9 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,6 +16,7 @@ ALLEGRO_TIMER* timer;
 
 ALLEGRO_BITMAP *background = NULL;
 ALLEGRO_FONT *font = NULL;
+ALLEGRO_AUDIO_STREAM *music = NULL;
 
 void initMenu(void)
 {
@@ -34,6 +38,10 @@ void initMenu(void)
     if (!font)
         abort_game("failed to load font");
 
+    music = al_load_audio_stream("musica.ogg", 4, 1024);
+    if (!music)
+        abort_game("failed to load audio");
+
     al_register_event_source(eventMenuQueue, al_get_keyboard_event_source());
     al_register_event_source(eventMenuQueue, al_get_timer_event_source(timer));
 
@@ -53,12 +61,19 @@ void shutdownMenu(void)
 
     if (font)
         al_destroy_font(font);
+
+    if(music)
+        al_destroy_audio_stream(music);
 }
 
 void menuLoop(ALLEGRO_DISPLAY* display)
 {
     bool redraw = true;
     al_start_timer(timer);
+
+    al_attach_audio_stream_to_mixer(music, al_get_default_mixer());
+    al_set_audio_stream_playing(music, true);
+    al_set_audio_stream_playmode(music, ALLEGRO_PLAYMODE_LOOP);
 
     while (!menuDone) {
         ALLEGRO_EVENT event;
