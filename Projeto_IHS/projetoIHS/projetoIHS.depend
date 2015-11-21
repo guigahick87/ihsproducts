@@ -32,8 +32,10 @@
 	<stdio.h>
 	<stdlib.h>
 
-1448070211 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.c
+1448071224 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.c
 	<allegro5/allegro5.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
 	<stdio.h>
 	<stdlib.h>
 	"fade.h"
