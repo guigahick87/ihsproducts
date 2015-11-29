@@ -4,6 +4,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <cstdlib>
 #include <ctime>
 #include "objetos.h"
@@ -14,7 +16,7 @@
 const int largura_t = 800;
 const int altura_t = 600;
 const int FPS = 30;
-const int NUM_BALAS = 5;
+const int NUM_BALAS = 15;
 const int NUM_COMETAS = 10;
 const int NUM_ESTRELAS = 100;
 
@@ -25,6 +27,14 @@ int currentSpriteEnemy = 0;
 Sprite spriteAnimadaNave[MAX_SPRITES];
 int contSpritesNave = 0;
 int currentSpriteNave = 0;
+
+ALLEGRO_SAMPLE *trilha_sonora = NULL;
+ALLEGRO_SAMPLE *laser = NULL;
+ALLEGRO_SAMPLE *explosao = NULL;
+
+ALLEGRO_SAMPLE_INSTANCE *inst_trilha_sonora = NULL;
+ALLEGRO_SAMPLE_INSTANCE *inst_laser = NULL;
+ALLEGRO_SAMPLE_INSTANCE *inst_explosao = NULL;
 
 enum TECLAS {CIMA, BAIXO, ESQUERDA, DIREITA, SPACE, ENTER};
 // -----------------------------------
@@ -113,15 +123,38 @@ int main()
         al_install_keyboard();
         al_init_font_addon();
         al_init_ttf_addon();
+        al_install_audio();
+        al_init_acodec_addon();
+        al_reserve_samples(10);
     // -------------------------------------------------------
 
     // -------- CRIAÇÃO DA FILA E DEMAIS DISPOSITIVOS --------
         fila_eventos = al_create_event_queue();
         timer = al_create_timer(1.0 / FPS);
+        font14 = al_load_font("font.ttf", 14, NULL);
+
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_text(font14, al_map_rgb(255, 255, 255), largura_t / 2, altura_t / 2, ALLEGRO_ALIGN_CENTER, "Carregando...");
+        al_flip_display();
+
         background = al_load_bitmap("background.jpg");
         enemySprite = al_load_bitmap("enemy.png");
         naveSprite = al_load_bitmap("nave.png");
-        font14 = al_load_font("font.ttf", 14, NULL);
+
+        trilha_sonora = al_load_sample("track.ogg");
+        laser = al_load_sample("shoot.wav");
+        explosao = al_load_sample("explosion.wav");
+
+        inst_trilha_sonora = al_create_sample_instance(trilha_sonora);
+        inst_laser = al_create_sample_instance(laser);
+        inst_explosao = al_create_sample_instance(explosao);
+
+        al_attach_sample_instance_to_mixer(inst_trilha_sonora, al_get_default_mixer());
+        al_attach_sample_instance_to_mixer(inst_laser, al_get_default_mixer());
+        al_attach_sample_instance_to_mixer(inst_explosao, al_get_default_mixer());
+
+        al_set_sample_instance_playmode(inst_trilha_sonora, ALLEGRO_PLAYMODE_LOOP);
+        al_set_sample_instance_gain(inst_trilha_sonora, 0.8);
     // -------------------------------------------------------
 
     // -------- REGISTRO DE SOURCES --------
@@ -225,6 +258,8 @@ int main()
 
                     if(!game_over)
                     {
+                        al_play_sample_instance(inst_trilha_sonora);
+
                         AtualizarPlano_1(estrelas_p1, NUM_ESTRELAS);
                         AtualizarPlano_2(estrelas_p2, NUM_ESTRELAS);
                         AtualizarPlano_3(estrelas_p3, NUM_ESTRELAS);
@@ -236,6 +271,25 @@ int main()
 
                         if(nave.vidas <= 0)
                            game_over = true;
+                    }
+                    else
+                    {
+                        al_stop_sample_instance(inst_trilha_sonora);
+                        al_stop_sample_instance(inst_laser);
+                        al_stop_sample_instance(inst_explosao);
+
+                        if(teclas[ENTER])
+                        {
+                            InitNave(nave);
+                            InitBalas(balas, NUM_BALAS);
+                            InitCometas(cometas, NUM_COMETAS);
+
+                            InitPlano_1(estrelas_p1, NUM_ESTRELAS);
+                            InitPlano_2(estrelas_p2, NUM_ESTRELAS);
+                            InitPlano_3(estrelas_p3, NUM_ESTRELAS);
+
+                            game_over = false;
+                        }
                     }
                 }
 
@@ -264,19 +318,6 @@ int main()
                     {
                         al_draw_textf(font14, al_map_rgb(255, 255, 255), largura_t / 2, altura_t / 2, ALLEGRO_ALIGN_CENTRE,
                         "Fim de jogo. Seus pontos: %d. Tecle ENTER para jogar novamente ou ESC para sair do jogo", nave.pontos);
-
-                        if(teclas[ENTER])
-                        {
-                            InitNave(nave);
-                            InitBalas(balas, NUM_BALAS);
-                            InitCometas(cometas, NUM_COMETAS);
-
-                            InitPlano_1(estrelas_p1, NUM_ESTRELAS);
-                            InitPlano_2(estrelas_p2, NUM_ESTRELAS);
-                            InitPlano_3(estrelas_p3, NUM_ESTRELAS);
-
-                            game_over = false;
-                        }
                     }
 
                     al_flip_display();
@@ -293,6 +334,12 @@ int main()
         al_destroy_bitmap(background);
         al_destroy_bitmap(enemySprite);
         al_destroy_bitmap(naveSprite);
+        al_destroy_sample(trilha_sonora);
+        al_destroy_sample(laser);
+        al_destroy_sample(explosao);
+        al_destroy_sample_instance(inst_trilha_sonora);
+        al_destroy_sample_instance(inst_laser);
+        al_destroy_sample_instance(inst_explosao);
         al_destroy_font(font14);
         al_destroy_display(display);
         al_destroy_timer(timer);
@@ -384,6 +431,8 @@ int main()
         {
             if(!balas[i].ativo)
             {
+                al_stop_sample_instance(inst_laser);
+                al_play_sample_instance(inst_laser);
                 balas[i].x = nave.x + 15;
                 balas[i].y = nave.y;
                 balas[i].ativo = true;
@@ -432,6 +481,8 @@ int main()
                             balas[i].y > (cometas[j].y - cometas[j].borda_y) &&
                             balas[i].y < (cometas[j].y + cometas[j].borda_y))
                             {
+                                al_stop_sample_instance(inst_explosao);
+                                al_play_sample_instance(inst_explosao);
                                 balas[i].ativo = false;
                                 cometas[j].ativo = false;
 
@@ -511,6 +562,8 @@ int main()
                     ((cometas[i].y - cometas[i].borda_y) < (nave.y + nave.borda_y)) &&
                     ((cometas[i].y + cometas[i].borda_y) > (nave.y - nave.borda_y)))
                     {
+                        al_stop_sample_instance(inst_explosao);
+                        al_play_sample_instance(inst_explosao);
                         cometas[i].ativo = false;
                         nave.vidas--;
                     }
