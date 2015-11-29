@@ -121,7 +121,7 @@ int main()
         background = al_load_bitmap("background.jpg");
         enemySprite = al_load_bitmap("enemy.png");
         naveSprite = al_load_bitmap("nave.png");
-        font14 = al_load_font("font.ttf", 22, NULL);
+        font14 = al_load_font("font.ttf", 14, NULL);
     // -------------------------------------------------------
 
     // -------- REGISTRO DE SOURCES --------

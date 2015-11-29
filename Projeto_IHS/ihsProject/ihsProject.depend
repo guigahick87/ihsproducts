@@ -12,3 +12,16 @@
 
 1448764158 /home/hugo/Documentos/Projeto_IHS/ihsProject/objetos.h
 
+1448768446 source:/home/hugo/ihsproducts/Projeto_IHS/ihsProject/main.cpp
+	<allegro5/allegro.h>
+	<allegro5/allegro_native_dialog.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<cstdlib>
+	<ctime>
+	"objetos.h"
+
+1448764158 /home/hugo/ihsproducts/Projeto_IHS/ihsProject/objetos.h
+

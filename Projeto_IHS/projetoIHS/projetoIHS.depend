@@ -20,7 +20,7 @@
 
 1448108095 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/constants.h
 
-1448112721 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.h
+1448113702 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/fade.h
 
 1448109719 /home/hugo/ihsproducts/Projeto_IHS/projetoIHS/util.h
 
@@ -31,7 +31,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1448113132 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.c
+1448113669 source:/home/hugo/ihsproducts/Projeto_IHS/projetoIHS/menu.c
 	<allegro5/allegro5.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
